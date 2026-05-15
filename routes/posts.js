@@ -131,4 +131,46 @@ router.post('/:id/comment', auth, async (req, res) => {
     }
 });
 
+// Update Post
+router.put('/:id', auth, async (req, res) => {
+    try {
+        const { title, lyrics } = req.body;
+        const post = await Post.findById(req.params.id);
+
+        if (!post) return res.status(404).json({ message: 'Post not found' });
+        
+        // Check if user is the owner
+        if (post.userId.toString() !== req.user) {
+            return res.status(401).json({ message: 'Unauthorized' });
+        }
+
+        post.title = title || post.title;
+        post.lyrics = lyrics || post.lyrics;
+
+        const updatedPost = await post.save();
+        res.json(updatedPost);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+// Delete Post
+router.delete('/:id', auth, async (req, res) => {
+    try {
+        const post = await Post.findById(req.params.id);
+
+        if (!post) return res.status(404).json({ message: 'Post not found' });
+
+        // Check if user is the owner
+        if (post.userId.toString() !== req.user) {
+            return res.status(401).json({ message: 'Unauthorized' });
+        }
+
+        await post.deleteOne();
+        res.json({ message: 'Post deleted successfully' });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
 module.exports = router;
