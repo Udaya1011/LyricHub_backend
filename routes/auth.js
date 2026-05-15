@@ -142,10 +142,11 @@ router.post('/upload-image', auth, upload.single('image'), async (req, res) => {
         console.log('File received:', req.file.originalname);
         
         let imageUrl = req.file.path;
-        // If it's local storage, make it an absolute URL
+        // If it's local storage, make it an absolute URL using Render host or local fallback
         if (!imageUrl.startsWith('http')) {
-            const baseUrl = `${req.protocol}://${req.get('host')}`;
-            imageUrl = `${baseUrl}/${imageUrl.replace(/\\/g, '/')}`;
+            const host = req.get('host');
+            const protocol = req.protocol === 'http' && host.includes('onrender.com') ? 'https' : req.protocol;
+            imageUrl = `${protocol}://${host}/${imageUrl.replace(/\\/g, '/')}`;
         }
         
         res.json({ imageUrl });
