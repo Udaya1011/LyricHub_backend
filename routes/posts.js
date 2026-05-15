@@ -42,6 +42,7 @@ router.get('/', async (req, res) => {
     try {
         const posts = await Post.find()
             .populate('userId', 'name profilePic')
+            .populate('comments.userId', 'name profilePic')
             .sort({ createdAt: -1 });
         res.json(posts);
     } catch (err) {
