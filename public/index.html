@@ -1,0 +1,1061 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="theme-color" content="#070712"/>
+  <meta name="description" content="Download LyricHub APK for Android - Stream music with synchronized lyrics, 60 FPS audio visualizer, and social platform."/>
+  <title>LyricHub - Official Android App Download</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <!-- FontAwesome 6 Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --primary: #a855f7;
+      --primary-dark: #7c3aed;
+      --accent-pink: #ec4899;
+      --bg-dark: #070712;
+      --bg-card: rgba(18, 18, 35, 0.7);
+      --border-glass: rgba(255, 255, 255, 0.08);
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+      line-height: 1.6;
+      position: relative;
+    }
+
+    /* Ambient Background Glows */
+    .ambient-glow {
+      position: fixed;
+      pointer-events: none;
+      z-index: 0;
+      border-radius: 50%;
+      filter: blur(120px);
+      opacity: 0.5;
+    }
+    .glow-1 {
+      top: -10%;
+      left: -5%;
+      width: 550px;
+      height: 550px;
+      background: radial-gradient(circle, #7c3aed 0%, transparent 70%);
+    }
+    .glow-2 {
+      top: 30%;
+      right: -10%;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, #ec4899 0%, transparent 70%);
+      opacity: 0.35;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Navigation */
+    header {
+      padding: 24px 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+    }
+    .logo-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--primary-dark), var(--accent-pink));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      color: #fff;
+      box-shadow: 0 6px 20px rgba(168, 85, 247, 0.4);
+    }
+    .logo-text {
+      font-size: 24px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      background: linear-gradient(90deg, #fff, #f472b6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .badge-status {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 16px;
+      border-radius: 100px;
+      background: rgba(16, 185, 129, 0.1);
+      border: 1px solid rgba(16, 185, 129, 0.25);
+      color: #34d399;
+      font-size: 13px;
+      font-weight: 600;
+    }
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #10b981;
+      box-shadow: 0 0 10px #10b981;
+      animation: pulseDot 2s infinite;
+    }
+
+    /* Hero Section */
+    .hero {
+      padding: 70px 0 90px;
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 48px;
+      align-items: center;
+    }
+    @media (max-width: 960px) {
+      .hero {
+        grid-template-columns: 1fr;
+        text-align: center;
+        padding: 40px 0 60px;
+      }
+      .hero-left {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      .meta-pills, .feature-tags {
+        justify-content: center;
+      }
+      .hero-right {
+        order: -1;
+      }
+    }
+
+    /* Hero Left */
+    .tag-bubble {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 18px;
+      border-radius: 100px;
+      background: rgba(168, 85, 247, 0.12);
+      border: 1px solid rgba(168, 85, 247, 0.3);
+      color: #c084fc;
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 22px;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+    }
+    .hero-title {
+      font-size: clamp(2.8rem, 5.5vw, 4.4rem);
+      font-weight: 800;
+      line-height: 1.08;
+      letter-spacing: -1.5px;
+      margin-bottom: 20px;
+    }
+    .text-gradient {
+      background: linear-gradient(135deg, #c084fc 10%, #ec4899 90%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .hero-desc {
+      font-size: 1.15rem;
+      color: var(--text-muted);
+      max-width: 520px;
+      line-height: 1.7;
+      margin-bottom: 32px;
+    }
+
+    /* Download Action Bar */
+    .download-cta-box {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-bottom: 36px;
+      width: 100%;
+      max-width: 480px;
+    }
+    .btn-download {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      background: linear-gradient(135deg, #7c3aed, #a855f7, #ec4899);
+      background-size: 200% auto;
+      color: #fff;
+      text-decoration: none;
+      padding: 20px 36px;
+      border-radius: 18px;
+      font-weight: 800;
+      font-size: 1.15rem;
+      box-shadow: 0 10px 40px rgba(168, 85, 247, 0.45);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative;
+      overflow: hidden;
+    }
+    .btn-download:hover {
+      transform: translateY(-3px) scale(1.02);
+      box-shadow: 0 18px 50px rgba(168, 85, 247, 0.6);
+      background-position: right center;
+    }
+    .btn-download:active {
+      transform: translateY(0) scale(0.98);
+    }
+    .btn-download i.brand-icon {
+      font-size: 32px;
+      color: #34d399;
+      filter: drop-shadow(0 2px 8px rgba(0,0,0,0.3));
+    }
+    .btn-text-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      text-align: left;
+    }
+    .btn-text-sub {
+      font-size: 12px;
+      font-weight: 500;
+      opacity: 0.85;
+      letter-spacing: 0.5px;
+    }
+    .btn-text-main {
+      font-size: 18px;
+      font-weight: 800;
+      line-height: 1.2;
+    }
+
+    /* Meta Badges */
+    .meta-pills {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .meta-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 6px 14px;
+      border-radius: 10px;
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+    .meta-item i {
+      color: #a855f7;
+    }
+
+    /* Feature tags row */
+    .feature-tags {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+    }
+    .feat-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      padding: 8px 16px;
+      border-radius: 100px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #e2e8f0;
+      transition: all 0.2s ease;
+    }
+    .feat-tag:hover {
+      background: rgba(168, 85, 247, 0.1);
+      border-color: rgba(168, 85, 247, 0.3);
+      transform: translateY(-2px);
+    }
+    .feat-tag i {
+      font-size: 14px;
+      color: var(--accent-pink);
+    }
+
+    /* Hero Right - Pure CSS Animated Phone Mockup (NO IMAGE) */
+    .hero-right {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+    }
+    .phone-stage {
+      position: relative;
+      width: 100%;
+      max-width: 320px;
+      display: flex;
+      justify-content: center;
+    }
+    .phone-backlight {
+      position: absolute;
+      width: 340px;
+      height: 340px;
+      background: radial-gradient(circle, rgba(168, 85, 247, 0.35) 0%, rgba(236, 72, 153, 0.15) 50%, transparent 70%);
+      border-radius: 50%;
+      filter: blur(40px);
+      z-index: 0;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      animation: pulseGlow 4s ease-in-out infinite;
+    }
+
+    /* CSS Animated Phone Device */
+    .phone-device {
+      position: relative;
+      z-index: 1;
+      width: 250px;
+      background: linear-gradient(160deg, #131326, #1b1b36);
+      border-radius: 40px;
+      border: 2px solid rgba(168, 85, 247, 0.3);
+      box-shadow:
+        0 25px 60px -15px rgba(0, 0, 0, 0.9),
+        0 0 0 1px rgba(255, 255, 255, 0.08),
+        0 15px 35px rgba(168, 85, 247, 0.25);
+      overflow: hidden;
+      animation: floatMobile 5s ease-in-out infinite;
+      transition: transform 0.3s ease;
+    }
+    .phone-device:hover {
+      transform: scale(1.02) translateY(-6px);
+    }
+    .notch-bar {
+      display: flex;
+      justify-content: center;
+      padding: 10px 0 6px;
+    }
+    .notch {
+      width: 80px;
+      height: 20px;
+      background: var(--bg-dark);
+      border-radius: 0 0 16px 16px;
+    }
+    .phone-screen {
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    /* Screen Elements */
+    .screen-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-bottom: 4px;
+    }
+    .sh-left {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .sh-avatar {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary), var(--accent-pink));
+    }
+    .sh-name {
+      width: 70px;
+      height: 7px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 4px;
+    }
+    .sh-icon {
+      color: #c084fc;
+      font-size: 12px;
+    }
+
+    /* Animated Visualizer Spectrum Card */
+    .viz-card {
+      background: rgba(168, 85, 247, 0.1);
+      border: 1px solid rgba(168, 85, 247, 0.25);
+      border-radius: 16px;
+      padding: 14px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .waveform-wrap {
+      display: flex;
+      align-items: flex-end;
+      gap: 3px;
+      height: 46px;
+      padding: 0 2px;
+    }
+    .w-bar {
+      flex: 1;
+      border-radius: 3px 3px 0 0;
+      background: linear-gradient(to top, #7c3aed, #ec4899);
+      animation: barJump var(--d) ease-in-out infinite alternate;
+      transform-origin: bottom;
+    }
+    .track-meta {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .track-cover {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, #7c3aed, #ec4899);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      color: #fff;
+    }
+    .track-info {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .track-title {
+      height: 7px;
+      width: 85px;
+      background: rgba(255, 255, 255, 0.3);
+      border-radius: 4px;
+    }
+    .track-sub {
+      height: 5px;
+      width: 55px;
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 4px;
+    }
+    .track-heart {
+      color: #ec4899;
+      font-size: 14px;
+      animation: pulseDot 2s infinite;
+    }
+
+    /* Animated Lyrics Lines */
+    .lyrics-box {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      padding: 2px;
+    }
+    .lyric-item {
+      height: 6px;
+      border-radius: 3px;
+      background: rgba(255, 255, 255, 0.08);
+    }
+    .lyric-item.highlight {
+      background: linear-gradient(90deg, #a855f7, #ec4899);
+      box-shadow: 0 0 12px rgba(168, 85, 247, 0.5);
+      animation: glowLyric 3s ease-in-out infinite alternate;
+    }
+
+    /* Player Mini Controls */
+    .player-controls {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 6px 10px;
+      background: rgba(255, 255, 255, 0.03);
+      border-radius: 12px;
+      margin-top: 4px;
+    }
+    .p-btn {
+      color: rgba(255, 255, 255, 0.4);
+      font-size: 12px;
+    }
+    .p-play {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary), var(--accent-pink));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 12px;
+      box-shadow: 0 4px 14px rgba(168, 85, 247, 0.5);
+    }
+
+    .bottom-bar {
+      width: 44px;
+      height: 4px;
+      border-radius: 2px;
+      background: rgba(255, 255, 255, 0.15);
+      margin: 10px auto 14px;
+    }
+
+    /* Features Grid */
+    .section-title-wrap {
+      text-align: center;
+      margin-bottom: 50px;
+    }
+    .section-tag {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--primary);
+      margin-bottom: 8px;
+      display: block;
+    }
+    .section-title {
+      font-size: clamp(1.8rem, 3.5vw, 2.5rem);
+      font-weight: 800;
+      letter-spacing: -0.5px;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+      margin-bottom: 90px;
+    }
+    .feature-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-glass);
+      border-radius: 20px;
+      padding: 28px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      backdrop-filter: blur(10px);
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative;
+      overflow: hidden;
+    }
+    .feature-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--primary), transparent);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    .feature-card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(168, 85, 247, 0.4);
+      box-shadow: 0 16px 36px rgba(168, 85, 247, 0.15);
+    }
+    .feature-card:hover::before {
+      opacity: 1;
+    }
+    .feat-icon-box {
+      width: 50px;
+      height: 50px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+    }
+    .feat-icon-1 { background: rgba(168, 85, 247, 0.15); color: #c084fc; border: 1px solid rgba(168, 85, 247, 0.3); }
+    .feat-icon-2 { background: rgba(236, 72, 153, 0.15); color: #f472b6; border: 1px solid rgba(236, 72, 153, 0.3); }
+    .feat-icon-3 { background: rgba(6, 182, 212, 0.15); color: #22d3ee; border: 1px solid rgba(6, 182, 212, 0.3); }
+    .feat-icon-4 { background: rgba(16, 185, 129, 0.15); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.3); }
+
+    .feature-card h3 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #fff;
+    }
+    .feature-card p {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    /* Installation Steps */
+    .install-box {
+      background: linear-gradient(135deg, rgba(26, 20, 48, 0.6), rgba(18, 18, 35, 0.6));
+      border: 1px solid rgba(168, 85, 247, 0.2);
+      border-radius: 24px;
+      padding: 40px 36px;
+      margin-bottom: 90px;
+      backdrop-filter: blur(12px);
+    }
+    .install-box h3 {
+      font-size: 1.5rem;
+      font-weight: 800;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .install-steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 24px;
+    }
+    .step-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+    }
+    .step-num {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary), var(--accent-pink));
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 15px;
+      flex-shrink: 0;
+    }
+    .step-content h4 {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+    .step-content p {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    /* Bottom CTA banner */
+    .cta-banner {
+      text-align: center;
+      padding: 60px 30px;
+      border-radius: 28px;
+      background: linear-gradient(135deg, rgba(124, 58, 237, 0.2), rgba(236, 72, 153, 0.15));
+      border: 1px solid rgba(168, 85, 247, 0.3);
+      margin-bottom: 70px;
+      position: relative;
+      overflow: hidden;
+    }
+    .cta-banner h2 {
+      font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+      font-weight: 800;
+      margin-bottom: 12px;
+    }
+    .cta-banner p {
+      color: var(--text-muted);
+      max-width: 480px;
+      margin: 0 auto 28px;
+      font-size: 1rem;
+    }
+    .cta-btn-wrap {
+      display: flex;
+      justify-content: center;
+    }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 30px 0 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+      color: var(--text-muted);
+      font-size: 13px;
+    }
+    .footer-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .footer-right {
+      display: flex;
+      gap: 20px;
+    }
+    .footer-right a {
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .footer-right a:hover {
+      color: var(--primary);
+    }
+
+    /* Keyframe Animations */
+    @keyframes barJump {
+      0% {
+        transform: scaleY(0.25);
+      }
+      100% {
+        transform: scaleY(1);
+      }
+    }
+    @keyframes floatMobile {
+      0%, 100% {
+        transform: translateY(0px) rotate(0deg);
+      }
+      50% {
+        transform: translateY(-14px) rotate(-1deg);
+      }
+    }
+    @keyframes glowLyric {
+      0% {
+        opacity: 0.7;
+        box-shadow: 0 0 6px rgba(168, 85, 247, 0.3);
+      }
+      100% {
+        opacity: 1;
+        box-shadow: 0 0 16px rgba(236, 72, 153, 0.7);
+      }
+    }
+    @keyframes pulseGlow {
+      0%, 100% {
+        opacity: 0.35;
+        transform: translate(-50%, -50%) scale(0.95);
+      }
+      50% {
+        opacity: 0.55;
+        transform: translate(-50%, -50%) scale(1.05);
+      }
+    }
+    @keyframes pulseDot {
+      0%, 100% {
+        transform: scale(1);
+        opacity: 1;
+      }
+      50% {
+        transform: scale(1.3);
+        opacity: 0.7;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Ambient Glows -->
+  <div class="ambient-glow glow-1"></div>
+  <div class="ambient-glow glow-2"></div>
+
+  <div class="container">
+    <!-- Header -->
+    <header>
+      <a href="#" class="logo">
+        <div class="logo-icon">
+          <i class="fa-solid fa-music"></i>
+        </div>
+        <span class="logo-text">LyricHub</span>
+      </a>
+      <div class="badge-status">
+        <span class="status-dot"></span>
+        <span>APK v1.0.0 Ready</span>
+      </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+      <!-- Left Column -->
+      <div class="hero-left">
+        <div class="tag-bubble">
+          <i class="fa-solid fa-bolt"></i>
+          <span>Official Android Release</span>
+        </div>
+
+        <h1 class="hero-title">
+          Stream Music.<br/>
+          Sync Lyrics.<br/>
+          <span class="text-gradient">Live The Beat.</span>
+        </h1>
+
+        <p class="hero-desc">
+          The ultimate social music platform with 60 FPS real-time audio visualization, synchronized karaoke lyrics, AI music creator, and direct artist chat.
+        </p>
+
+        <div class="download-cta-box">
+          <a class="btn-download" id="heroDownloadBtn" href="./LyricHub.apk" download="LyricHub.apk">
+            <i class="fa-brands fa-android brand-icon"></i>
+            <div class="btn-text-wrap">
+              <span class="btn-text-sub">DIRECT DOWNLOAD &bull; ANDROID 6.0+</span>
+              <span class="btn-text-main">Download LyricHub APK</span>
+            </div>
+            <i class="fa-solid fa-arrow-down" style="font-size: 18px; margin-left: auto;"></i>
+          </a>
+
+          <div class="meta-pills">
+            <div class="meta-item">
+              <i class="fa-solid fa-shield-halved"></i>
+              <span>100% Verified Safe</span>
+            </div>
+            <div class="meta-item">
+              <i class="fa-solid fa-hard-drive"></i>
+              <span>81.7 MB</span>
+            </div>
+            <div class="meta-item">
+              <i class="fa-solid fa-certificate"></i>
+              <span>No Ads &bull; Free</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Interactive feature pills -->
+        <div class="feature-tags">
+          <div class="feat-tag"><i class="fa-solid fa-wave-square"></i> 60 FPS Visualizer</div>
+          <div class="feat-tag"><i class="fa-solid fa-microphone-lines"></i> Synced Lyrics</div>
+          <div class="feat-tag"><i class="fa-solid fa-users"></i> Social Stories</div>
+          <div class="feat-tag"><i class="fa-solid fa-wand-magic-sparkles"></i> AI Studio</div>
+        </div>
+      </div>
+
+      <!-- Right Column: Pure CSS Animated Phone Device -->
+      <div class="hero-right">
+        <div class="phone-stage">
+          <div class="phone-backlight"></div>
+
+          <div class="phone-device">
+            <div class="notch-bar">
+              <div class="notch"></div>
+            </div>
+
+            <div class="phone-screen">
+              <!-- Top bar -->
+              <div class="screen-header">
+                <div class="sh-left">
+                  <div class="sh-avatar"></div>
+                  <div class="sh-name"></div>
+                </div>
+                <i class="fa-solid fa-bell sh-icon"></i>
+              </div>
+
+              <!-- Animated Visualizer Card -->
+              <div class="viz-card">
+                <div class="waveform-wrap">
+                  <div class="w-bar" style="height:45%;--d:0.8s"></div>
+                  <div class="w-bar" style="height:75%;--d:1.1s"></div>
+                  <div class="w-bar" style="height:55%;--d:0.7s"></div>
+                  <div class="w-bar" style="height:95%;--d:1.3s"></div>
+                  <div class="w-bar" style="height:60%;--d:0.9s"></div>
+                  <div class="w-bar" style="height:85%;--d:0.65s"></div>
+                  <div class="w-bar" style="height:40%;--d:1.15s"></div>
+                  <div class="w-bar" style="height:90%;--d:0.85s"></div>
+                  <div class="w-bar" style="height:50%;--d:1.05s"></div>
+                  <div class="w-bar" style="height:80%;--d:0.75s"></div>
+                  <div class="w-bar" style="height:65%;--d:1.2s"></div>
+                  <div class="w-bar" style="height:45%;--d:0.95s"></div>
+                </div>
+
+                <div class="track-meta">
+                  <div class="track-cover">
+                    <i class="fa-solid fa-music"></i>
+                  </div>
+                  <div class="track-info">
+                    <div class="track-title"></div>
+                    <div class="track-sub"></div>
+                  </div>
+                  <i class="fa-solid fa-heart track-heart"></i>
+                </div>
+              </div>
+
+              <!-- Animated Lyrics Lines -->
+              <div class="lyrics-box">
+                <div class="lyric-item" style="width: 85%;"></div>
+                <div class="lyric-item highlight" style="width: 72%;"></div>
+                <div class="lyric-item" style="width: 90%;"></div>
+                <div class="lyric-item" style="width: 60%;"></div>
+                <div class="lyric-item" style="width: 78%;"></div>
+              </div>
+
+              <!-- Mini Controls -->
+              <div class="player-controls">
+                <i class="fa-solid fa-shuffle p-btn"></i>
+                <i class="fa-solid fa-backward-step p-btn"></i>
+                <div class="p-play">
+                  <i class="fa-solid fa-play"></i>
+                </div>
+                <i class="fa-solid fa-forward-step p-btn"></i>
+                <i class="fa-solid fa-repeat p-btn"></i>
+              </div>
+            </div>
+
+            <div class="bottom-bar"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Features Showcase -->
+    <div class="section-title-wrap">
+      <span class="section-tag">Powerful Features</span>
+      <h2 class="section-title">Built For The Modern Music Community</h2>
+    </div>
+
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feat-icon-box feat-icon-1">
+          <i class="fa-solid fa-wand-magic-sparkles"></i>
+        </div>
+        <h3>AI Music Generation</h3>
+        <p>Compose custom AI beats, generate rhyming lyrics instantly, and share your unique musical creations with the world.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feat-icon-box feat-icon-2">
+          <i class="fa-solid fa-chart-simple"></i>
+        </div>
+        <h3>60 FPS Visualizer</h3>
+        <p>Ultra-responsive Web Audio API frequency analysis visualizer with fluid particle glows and dynamic spectrum bars.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feat-icon-box feat-icon-3">
+          <i class="fa-solid fa-comments"></i>
+        </div>
+        <h3>Social &amp; Direct Chat</h3>
+        <p>Follow your favorite artists, comment in real time, post stories, and direct message fellow music producers.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feat-icon-box feat-icon-4">
+          <i class="fa-solid fa-fingerprint"></i>
+        </div>
+        <h3>WebAuthn &amp; Security</h3>
+        <p>Enterprise-grade biometric authentication, Face ID login, bcrypt encrypted passwords, and secure JWT sessions.</p>
+      </div>
+    </div>
+
+    <!-- How to Install Steps -->
+    <div class="install-box">
+      <h3>
+        <i class="fa-brands fa-android" style="color: #34d399;"></i>
+        How to Install on Your Android Device
+      </h3>
+      <div class="install-steps">
+        <div class="step-item">
+          <div class="step-num">1</div>
+          <div class="step-content">
+            <h4>Download the APK</h4>
+            <p>Tap the <strong>Download LyricHub APK</strong> button above to save the 81.7 MB installer package.</p>
+          </div>
+        </div>
+
+        <div class="step-item">
+          <div class="step-num">2</div>
+          <div class="step-content">
+            <h4>Enable Unknown Sources</h4>
+            <p>If prompted, allow your browser or file manager to <em>"Install unknown apps"</em> in Android Settings.</p>
+          </div>
+        </div>
+
+        <div class="step-item">
+          <div class="step-num">3</div>
+          <div class="step-content">
+            <h4>Open &amp; Enjoy!</h4>
+            <p>Tap <strong>Install</strong>, launch LyricHub from your home screen, and enjoy unlimited music.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom CTA -->
+    <div class="cta-banner">
+      <h2>Ready To Upgrade Your Music Experience?</h2>
+      <p>Download LyricHub today and join thousands of creators sharing beats, lyrics, and stories.</p>
+      <div class="cta-btn-wrap">
+        <a class="btn-download" id="footerDownloadBtn" href="./LyricHub.apk" download="LyricHub.apk" style="max-width: 380px;">
+          <i class="fa-brands fa-android brand-icon"></i>
+          <div class="btn-text-wrap">
+            <span class="btn-text-sub">FREE DIRECT DOWNLOAD</span>
+            <span class="btn-text-main">Get LyricHub for Android</span>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+      <div class="footer-left">
+        <div class="logo-icon" style="width: 30px; height: 30px; font-size: 14px;">
+          <i class="fa-solid fa-music"></i>
+        </div>
+        <span>&copy; 2026 LyricHub. All rights reserved.</span>
+      </div>
+      <div class="footer-right">
+        <a href="#heroDownloadBtn"><i class="fa-solid fa-arrow-up"></i> Back to top</a>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Download Handler JS -->
+  <script>
+    function handleApkDownload(e) {
+      e.preventDefault();
+      var btn = e.currentTarget;
+      var originalHtml = btn.innerHTML;
+
+      // Loading state
+      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin brand-icon" style="color:#c084fc;"></i><div class="btn-text-wrap"><span class="btn-text-sub">STARTING DOWNLOAD (81 MB)...</span><span class="btn-text-main">Preparing Installer...</span></div>';
+      btn.style.opacity = '0.9';
+
+      var apkUrl = './LyricHub.apk';
+
+      fetch(apkUrl)
+        .then(function(res) {
+          if (!res.ok) throw new Error('Download request failed');
+          return res.blob();
+        })
+        .then(function(blob) {
+          var blobUrl = window.URL.createObjectURL(new Blob([blob], { type: 'application/vnd.android.package-archive' }));
+          var link = document.createElement('a');
+          link.href = blobUrl;
+          link.download = 'LyricHub.apk';
+          document.body.appendChild(link);
+          link.click();
+          setTimeout(function() {
+            document.body.removeChild(link);
+            window.URL.revokeObjectURL(blobUrl);
+          }, 400);
+
+          // Success state
+          btn.innerHTML = '<i class="fa-solid fa-circle-check brand-icon" style="color:#34d399;"></i><div class="btn-text-wrap"><span class="btn-text-sub">DOWNLOAD STARTED!</span><span class="btn-text-main">Check Notifications</span></div>';
+          btn.style.background = 'linear-gradient(135deg, #059669, #10b981)';
+
+          setTimeout(function() {
+            btn.innerHTML = originalHtml;
+            btn.style.background = '';
+            btn.style.opacity = '1';
+          }, 4500);
+        })
+        .catch(function(err) {
+          window.location.href = apkUrl;
+          btn.innerHTML = originalHtml;
+          btn.style.opacity = '1';
+        });
+    }
+
+    document.querySelectorAll('.btn-download').forEach(function(el) {
+      el.addEventListener('click', handleApkDownload);
+    });
+  </script>
+</body>
+</html>
