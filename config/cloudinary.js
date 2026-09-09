@@ -6,7 +6,10 @@ const fs = require('fs');
 
 const isCloudinaryConfigured = 
     process.env.CLOUDINARY_CLOUD_NAME && 
-    process.env.CLOUDINARY_CLOUD_NAME !== 'your_cloud_name';
+    process.env.CLOUDINARY_CLOUD_NAME !== 'your_cloud_name' &&
+    process.env.CLOUDINARY_CLOUD_NAME !== 'lyrichub' &&
+    process.env.CLOUDINARY_API_KEY &&
+    process.env.CLOUDINARY_API_SECRET;
 
 let storage;
 

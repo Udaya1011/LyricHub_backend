@@ -47,7 +47,10 @@ router.post('/register', async (req, res) => {
             user: {
                 id: savedUser._id,
                 name: savedUser.name,
-                email: savedUser.email
+                email: savedUser.email,
+                profilePic: savedUser.profilePic,
+                bio: savedUser.bio,
+                isAdmin: savedUser.isAdmin
             }
         });
 
@@ -132,7 +135,15 @@ router.put('/change-password', auth, async (req, res) => {
 
 // Upload Profile Picture
 const upload = require('../config/cloudinary');
-router.post('/upload-image', auth, upload.single('image'), async (req, res) => {
+router.post('/upload-image', auth, (req, res, next) => {
+    upload.single('image')(req, res, (err) => {
+        if (err) {
+            console.error('Upload middleware error:', err);
+            return res.status(400).json({ message: err.message || 'Image upload failed' });
+        }
+        next();
+    });
+}, async (req, res) => {
     try {
         console.log('Upload Request Received');
         if (!req.file) {
@@ -145,13 +156,14 @@ router.post('/upload-image', auth, upload.single('image'), async (req, res) => {
         // If it's local storage, make it an absolute URL using Render host or local fallback
         if (!imageUrl.startsWith('http')) {
             const host = req.get('host');
-            const protocol = req.protocol === 'http' && host.includes('onrender.com') ? 'https' : req.protocol;
-            imageUrl = `${protocol}://${host}/${imageUrl.replace(/\\/g, '/')}`;
+            const protocol = req.protocol === 'http' && host && host.includes('onrender.com') ? 'https' : req.protocol;
+            const cleanPath = imageUrl.replace(/\\/g, '/').replace(/^\/+/, '');
+            imageUrl = `${protocol}://${host}/${cleanPath}`;
         }
         
         res.json({ imageUrl });
     } catch (err) {
-        console.error('Cloudinary Upload Error:', err);
+        console.error('Upload Error:', err);
         res.status(500).json({ error: 'Internal Server Error', details: err.message });
     }
 });
