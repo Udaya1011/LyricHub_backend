@@ -24,7 +24,8 @@ if (isCloudinaryConfigured) {
         cloudinary: cloudinary,
         params: {
             folder: 'lyrichub',
-            allowed_formats: ['jpg', 'png', 'jpeg', 'mp3', 'wav']
+            resource_type: 'auto',
+            allowed_formats: ['jpg', 'png', 'jpeg', 'mp3', 'wav', 'm4a', 'aac', 'ogg', 'webm']
         },
     });
 } else {

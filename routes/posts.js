@@ -3,6 +3,39 @@ const Post = require('../models/Post');
 const User = require('../models/User');
 const Notification = require('../models/Notification');
 const auth = require('../middleware/auth');
+const upload = require('../config/cloudinary');
+
+// Upload Audio
+router.post('/upload-audio', auth, (req, res, next) => {
+    upload.single('audio')(req, res, (err) => {
+        if (err) {
+            console.error('Audio upload middleware error:', err);
+            return res.status(400).json({ message: err.message || 'Audio upload failed' });
+        }
+        next();
+    });
+}, async (req, res) => {
+    try {
+        console.log('Audio Upload Request Received');
+        if (!req.file) {
+            return res.status(400).json({ message: 'No audio file uploaded' });
+        }
+        console.log('Audio file received:', req.file.originalname);
+        
+        let audioUrl = req.file.path;
+        if (!audioUrl.startsWith('http')) {
+            const host = req.get('host');
+            const protocol = req.protocol === 'http' && host && host.includes('onrender.com') ? 'https' : req.protocol;
+            const cleanPath = audioUrl.replace(/\\/g, '/').replace(/^\/+/, '');
+            audioUrl = `${protocol}://${host}/${cleanPath}`;
+        }
+        
+        res.json({ audioUrl, filename: req.file.originalname });
+    } catch (err) {
+        console.error('Audio Upload Error:', err);
+        res.status(500).json({ error: 'Internal Server Error', details: err.message });
+    }
+});
 
 // Create Post
 router.post('/', auth, async (req, res) => {
@@ -135,7 +168,7 @@ router.post('/:id/comment', auth, async (req, res) => {
 // Update Post
 router.put('/:id', auth, async (req, res) => {
     try {
-        const { title, lyrics } = req.body;
+        const { title, lyrics, audioUrl, imageUrl } = req.body;
         const post = await Post.findById(req.params.id);
 
         if (!post) return res.status(404).json({ message: 'Post not found' });
@@ -147,6 +180,8 @@ router.put('/:id', auth, async (req, res) => {
 
         post.title = title || post.title;
         post.lyrics = lyrics || post.lyrics;
+        if (audioUrl !== undefined) post.audioUrl = audioUrl;
+        if (imageUrl !== undefined) post.imageUrl = imageUrl;
 
         const updatedPost = await post.save();
         res.json(updatedPost);
